@@ -5,13 +5,13 @@ public class HomeWork {
     public static void main(String[] args) {
     /* start of the exercise 2. types of data */
     byte byteType = 127;
-    short shotType = 30000;
+    short shotType = 3000;
     int intType = 10;
     long longType = 22L;
     float  floatType = 0.5f;
     double doubleType =0.444;
     char charType ='f';
-    boolean booleanType = false;
+    boolean booleanType = true;
     /* the end of the exercise 2.*/
 
     }
@@ -43,7 +43,7 @@ public class HomeWork {
         System.out.println("Привет " + name);
     }/* the end of the exercise 7.*/
 
-    /*  start of the exercise 7. leap year*/
+    /*  start of the exercise 8. leap year*/
     public static boolean leapYear (int year){
         return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
     }/* the end of the exercise 8.*/

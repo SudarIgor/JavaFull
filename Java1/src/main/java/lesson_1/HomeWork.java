@@ -9,7 +9,7 @@ public class HomeWork {
     int intType = 10;
     long longType = 22L;
     float  floatType = 0.5f;
-    double doubleType =0.444;
+    double doubleType =0.4454;
     char charType ='f';
     boolean booleanType = true;
     /* the end of the exercise 2.*/

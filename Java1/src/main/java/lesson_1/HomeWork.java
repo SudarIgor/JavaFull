@@ -5,7 +5,7 @@ public class HomeWork {
     public static void main(String[] args) {
     /* start of the exercise 2. types of data */
     byte byteType = 127;
-    short shotType = 3000;
+    short shotType = 30540;
     int intType = 10;
     long longType = 22L;
     float  floatType = 0.5f;

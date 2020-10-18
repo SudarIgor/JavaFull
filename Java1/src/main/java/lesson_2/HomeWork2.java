@@ -4,10 +4,11 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class HomeWork2 {
+
     static Scanner sc = new Scanner( System.in);
 
     public static int InputNaturalNumber (){
-        System.out.println("Введите размер массива");
+        System.out.println("Введите положительное число (размер массива)");
         return sc.nextInt();
     }
 
@@ -46,6 +47,12 @@ public class HomeWork2 {
         return Array;
     }
 
+    public static int [] GetArray (){
+        int [] Array = new int [InputNaturalNumber()];
+        Array = FillingArrayRandomNumber(Array,0,9);
+        return Array;
+    }
+
     public static int LeftOfArray(int [] Array, int indexArray){
         int left = 0;
         for (int i = 0; i <= indexArray; i++) {
@@ -60,6 +67,34 @@ public class HomeWork2 {
             right += Array [i];
         }
         return right;
+    }
+
+    public static int [] ShiftLeft(int [] Array, int shift){
+        int num;
+//        System.out.println(Arrays.toString(Array));
+        for (int i = 0; i < shift; i++) {
+            num = Array [0];
+            for (int j = 0; j < Array.length-1; j++) {
+                Array [j] = Array [j + 1];
+            }
+            Array [Array.length-1] = num;
+//            System.out.println(Arrays.toString(Array));
+        }
+        return Array;
+    }
+
+    public static int [] ShiftRight(int [] Array, int shift){
+        int num;
+//        System.out.println(Arrays.toString(Array));
+        for (int i = 0; i < shift; i++) {
+            num = Array [Array.length - 1];
+            for (int j = Array.length - 1; j > 0; j--) {
+                Array [j] = Array [j - 1];
+            }
+            Array [0] = num;
+//            System.out.println(Arrays.toString(Array));
+        }
+        return Array;
     }
 
     public static void ArrayZeroOrOne (){
@@ -114,10 +149,9 @@ public class HomeWork2 {
 
     }
 
-    public static boolean BalansArray(){
-        int [] Array = new int[InputNaturalNumber()];
-        Array = FillingArrayRandomNumber(Array, 0,9);
-//        System.out.println(Arrays.toString(Array)); // для проверки метода
+    public static boolean BalansArray(int [] Array){
+
+        System.out.println(Arrays.toString(Array)); // для проверки метода
         int left, right;
         for (int i =0; i < Array.length-1; i++) {
             left = LeftOfArray(Array, i);
@@ -127,10 +161,13 @@ public class HomeWork2 {
             }
         }
         return false;
-
     }
 
-
+    public static int [] ShiftArray(int [] Array, int shift){
+        if (shift * ( -1) > 0) Array = ShiftLeft(Array, shift * (-1));
+        else Array = ShiftRight (Array, shift);
+        return Array;
+    }
 
     public static void main(String[] args) {
         /** 1. Задать целочисленный массив, состоящий из элементов 0 и 1.
@@ -154,7 +191,7 @@ public class HomeWork2 {
          4. Создать квадратный двумерный целочисленный массив (количество строк и столбцов одинаковое),
          и с помощью цикла(-ов) заполнить его диагональные элементы единицами;
          **/
-          DiagonalsOfSquare();
+//          DiagonalsOfSquare();
 
         /**
          5. ** Задать одномерный массив и найти в нем
@@ -170,13 +207,22 @@ public class HomeWork2 {
          * эти символы в массив не входят.
          * */
         /** для проверки метода:
-         * boolean balans = BalansArray();
-         * System.out.println(balans); */
-//       BalansArray();
+         int [] Array = GetArray();
+         boolean balans = BalansArray(Array);
+         System.out.println(balans);
+         * */
+//      BalansArray(Array);
 
-
+        /**
+         * 7. **** Написать метод, которому на вход подается одномерный массив
+         * и число n (может быть положительным, или отрицательным),
+         * при этом метод должен сместить все элементымассива на n позиций.
+         * Для усложнения задачи нельзя пользоваться вспомогательными массивами.*/
+        /** для проверки метода:
+         int [] Array = GetArray();
+         int shift = InputNaturalNumber(); */
+//        ShiftArray(Array, shift);
 
 
     }
-
 }

@@ -89,20 +89,25 @@ public class HomeWork4 {
         return true;
     }
 
-    public static boolean checkDiagonalFour( char symbol) {
-        boolean toRight, toLeft;
-        toRight = true;
-        toLeft = true;
-        for (int i = 0; i< 4 ; i++) {
-            toRight &= (MAP[i][i] == symbol);
-            toLeft &= (MAP[4-i-1][i] == symbol);
-        }
+    public static boolean checkDiagonalFourAndMore(int sq, char symbol) {
 
-        if (toRight || toLeft) return true;
+
+        boolean toRight, toLeft;
+
+        for (int a = 0; a <= sq; a++) {
+            for (int z = 0; z <=sq ; z++) {
+                toRight = true;
+                toLeft = true;
+                for (int i = 0; i < 4 ; i++) {
+                    toRight &= (MAP[i+a][i+z] == symbol);
+                    toLeft &= (MAP[4 - i + a - 1][i+z] == symbol);
+                }
+                if (toRight || toLeft) return true;
+            }
+        }
 
         return false;
     }
-
     public static boolean checkDiagonalTree(char symbol){
 
         boolean toRight, toLeft;
@@ -123,7 +128,7 @@ public class HomeWork4 {
         boolean diag;
         if (SIZE ==3) winSer = 3;
         else winSer = 4;
-        sq=SIZE-winSer+1;
+        sq=SIZE-winSer;
         // Проверка по горизонтали
 //        for (int i = 0; i < SIZE - 1; i++) {
 //            count = 1;
@@ -148,7 +153,7 @@ public class HomeWork4 {
 //        }
         if (SIZE == 3) diag = checkDiagonalTree(symbol);
         else {
-            diag = checkDiagonalFour(symbol);
+            diag = checkDiagonalFourAndMore(sq, symbol);
         }
         if (diag) return true;
 
@@ -156,7 +161,7 @@ public class HomeWork4 {
     }
 
     public static void game(){
-        SIZE =4;
+        SIZE =6;
         System.out.println("""
                 Игра крестики-нолики!
                 Вы играете за Х

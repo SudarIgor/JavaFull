@@ -14,7 +14,7 @@ public class HomeWork6 {
      на бег может быть 400 м., у другой 600 м.*/
 
     public static void main(String[] args) {
-        double s;
+
         Cat cat = new Cat();
         Dog dog = new Dog();
 

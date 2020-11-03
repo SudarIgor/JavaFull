@@ -1,8 +1,17 @@
 package lesson_6;
 
-public abstract class Animal {
+class Animal {
+    private String animal;
     private double limitRangeRun;
     private double limitRangeJump;
+
+    public void setAnimal(String animal) {
+        this.animal = animal;
+    }
+
+    public String getAnimal() {
+        return animal;
+    }
 
     public double getLimitRangeRun() {
         return limitRangeRun;
@@ -20,8 +29,13 @@ public abstract class Animal {
         this.limitRangeJump = limitRangeJump;
     }
 
-    public abstract void run(double distRun);
+    public void run(double distRun) {
+        if (distRun <= getLimitRangeRun()) System.out.printf("%s пробежал %.2f\n", animal, distRun);
+        else System.out.printf("%s не смог пробежать %.2f\n", animal, distRun);
+    }
 
-    public abstract void jump(double distJump);
-
+    public void jump(double distJump) {
+        if (distJump <= getLimitRangeJump()) System.out.printf("%s прыгнул на %.2f\n",animal, distJump);
+        else System.out.printf("%s не смог прыгнуть %.2f\n",animal, distJump);
+    }
 }

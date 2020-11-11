@@ -4,17 +4,17 @@ import javax.swing.*;
 
 public class Window extends JFrame {
 
-     private  double aPow;
-     private  double pPow;
-     private  double dc;
-     private  double attInLine;
-     private static String str ="";
-     private static String [] courses = {"uW","mW", "W"};
-     private static String chBox = courses [0];
-     private static String res;
+    private  double aPow;
+    private  double pPow;
+    private  double dc;
+    private  double attInLine;
+    private static String str ="";
+    private static String [] courses = {"uW","mW", "W"};
+    private static String chBox = courses [0];
+    private static String res;
 
 
-     private String digit ( String ch){
+    private String digit (String ch){
 
          pPow = aPow * dc * attInLine;
 
@@ -30,8 +30,10 @@ public class Window extends JFrame {
          return res;
      }
 
-     private boolean checkDouble (String check){
-         return check.matches("(\\-*)\\d+");
+
+    private boolean checkDouble (String check){
+        check = check.replace(',','.');
+        return check.matches("(\\-*)\\d+\\.*+\\d*+");
      }
 
     public Window() /*throws HeadlessException*/ {
@@ -92,15 +94,16 @@ public class Window extends JFrame {
         });
 
         bCalc.addActionListener(e -> {
+
             boolean a = checkDouble(textAPow.getText());
             boolean b = checkDouble(textDC.getText());
             boolean c = checkDouble(textAttInLine.getText());
             if (a && b && c) {
                 lTrbl.setVisible(false);
-                aPow = Double.parseDouble(textAPow.getText());
-                dc = Double.parseDouble(textDC.getText());
-                attInLine = Math.pow(10.0, (Double.parseDouble(textAttInLine.getText()) / 10));
-
+                aPow = Double.parseDouble(textAPow.getText().replace(',','.') );
+                dc = Double.parseDouble(textDC.getText().replace(',','.') );
+                attInLine = Math.pow(10.0, (Double.parseDouble(textAttInLine.getText().
+                        replace(',','.') ) / 10));
                 res = digit(chBox);
                 lPPow.setText(res);
             }

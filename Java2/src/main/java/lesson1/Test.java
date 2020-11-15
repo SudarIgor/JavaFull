@@ -17,28 +17,17 @@ public class Test {
         RunningTrack runningTrack1 = new RunningTrack(100);
         RunningTrack runningTrack2 = new RunningTrack(200);
 
-        Action [] action = {
-                cat1,
-                cat2,
-                human1,
-                human2,
-                robot1,
-                robot2
-        };
+        Course course1 = new Course(wall1, runningTrack1);
+        Course course2 = new Course(wall2, runningTrack2);
 
-        Barrier [] barriers = new Barrier[4];
-        barriers [0] = wall1;
-        barriers [1] = runningTrack1;
-        barriers [2] = wall2;
-        barriers [3] = runningTrack2;
+        Team team1 = new Team("AAA", robot1, robot2, human1, cat1);
+        Team team2 = new Team("BBB", human1, cat2, cat1, robot1 );
 
+        course1.moving(team1);
+        team1.allTeam();
+        team1.winTeam();
 
-        for ( Action i : action) {
-            for (Barrier j : barriers) {
-                j.moving(i);
-                if (!i.isOnDistance()) break;
-            }
-
-        }
+        course2.moving(team2);
+        team2.winTeam();
     }
 }

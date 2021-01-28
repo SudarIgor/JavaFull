@@ -8,22 +8,31 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import lesson2.AuthServiceImpl;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class LogInChatController {
     public TextField loginTF;
     public PasswordField passwordPF;
     public Button logInBt;
     public Button registrationBt;
-    private MockAuthServiceImpl mockAuthService;
+
+    private static String userName;
+    private AuthServiceImpl authService;
 
 
-    public void enter(ActionEvent actionEvent) throws IOException {
 
-        mockAuthService = MockAuthServiceImpl.getSample();
-        boolean auth = mockAuthService.auth(loginTF.getText(), passwordPF.getText());
+    public void enter(ActionEvent actionEvent) throws IOException, SQLException, ClassNotFoundException {
+        authService = AuthServiceImpl.getSample();
+        boolean auth = authService.auth(loginTF.getText(), passwordPF.getText());
+
         if (auth){
+            userName = authService
+                    .getUserDao()
+                    .getUserName(authService.getUserDao().getUserByLogin(loginTF.getText()));
+
             Parent chat = FXMLLoader.load(getClass().getResource("chatForm.fxml"));
             Stage stage = new Stage();
             stage.setTitle("Chat");
@@ -47,5 +56,8 @@ public class LogInChatController {
         stage.show();
     }
 
+    public static String getUserName() {
 
+        return userName;
+    }
 }

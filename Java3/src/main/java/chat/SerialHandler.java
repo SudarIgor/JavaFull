@@ -1,11 +1,6 @@
 package chat;
 
-import lesson2.AuthServiceHandler;
-
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.sql.SQLException;
 
@@ -29,8 +24,8 @@ public class SerialHandler implements Closeable, Runnable {
         running = true;
         buffer = new byte[256];
         this.server = server;
-        os.writeObject(Message.of("Server", "Connection to the server is successful"));
-        os.flush();
+//        os.writeObject(Message.of("Server", "Connection to the server is successful"));
+//        os.flush();
     }
 
     public boolean isRunning() {
@@ -46,8 +41,39 @@ public class SerialHandler implements Closeable, Runnable {
         while (running) {
             try {
                 Message message = (Message) is.readObject();
-                if(message.getMessage().startsWith("/$start")){
+                if(message.getMessage().startsWith("/$login")){
+                    System.out.println("in login");
+                    boolean flag;
                     userName = message.getAuthor();
+                    flag = AuthServiceImpl.getSample().auth(
+                            message.getMessage().split(" ")[1], message.getMessage().split(" ")[2]);
+                    System.out.println(flag);
+                    if(flag) {
+                        System.out.println("Send true");
+                        os.writeObject(Message.of(userName,"/$trueLogin"));
+                    }
+                    else  {
+                        System.out.println("Send false");
+                        os.writeObject(Message.of(userName,"/$falseLogin"));
+                    }
+                    continue;
+                }
+                if(message.getMessage().startsWith("/$registration")){
+                     authServiceHandler = new AuthServiceHandler();
+                     if(!authServiceHandler.userExists(message.getMessage().split(" ")[1])){
+                         AuthServiceImpl.getSample().addUser(message.getMessage().split(" ")[1],
+                                 message.getMessage().split(" ")[2]);
+                         os.writeObject(Message.of("Name", "/$registrationSuccessful"));
+                     }   else  os.writeObject(Message.of("Name", "/$loginIsBusy"));
+
+//                    os.writeObject(Message.of("Name","/$trueLogin"));
+                    continue;
+                }
+
+                if(message.getMessage().startsWith("/$start")){
+                    os.writeObject(Message.of("Server", "Connection to the server is successful"));
+                    os.flush();
+
                     continue;
                 }
                 if (message.getMessage().startsWith("/changeNick")) {

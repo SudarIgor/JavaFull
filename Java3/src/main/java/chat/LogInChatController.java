@@ -25,15 +25,17 @@ public class LogInChatController {
 
 
     public void enter(ActionEvent actionEvent) throws IOException, SQLException, ClassNotFoundException {
-        authService = AuthServiceImpl.getSample();
-        boolean auth = authService.auth(loginTF.getText(), passwordPF.getText());
+        userName = loginTF.getText();
 
-        if (auth){
-            userName = authService
-                    .getUserDao()
-                    .getUserName(authService.getUserDao().getUserByLogin(loginTF.getText()));
+        NetworkService.getInstance().write(Message.of(userName,
+                String.join(" ", "/$login", loginTF.getText(), passwordPF.getText())));
 
-            Parent chat = FXMLLoader.load(getClass().getResource("chatForm.fxml"));
+        Message message =(Message) NetworkService.getInstance().getObjectInputStream().readObject();
+        System.out.println(message.toString());
+
+
+        if (message.getMessage().equals("/$trueLogin")){
+           Parent chat = FXMLLoader.load(getClass().getResource("chatForm.fxml"));
             Stage stage = new Stage();
             stage.setTitle("Chat");
             stage.setScene( new Scene(chat));

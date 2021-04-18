@@ -1,8 +1,6 @@
 package chat;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 
 public class NetworkService {
@@ -34,7 +32,7 @@ public class NetworkService {
         os.flush();
     }
 
-    public ObjectInputStream getInputStream() {
+    public ObjectInputStream getObjectInputStream() {
         return is;
     }
 

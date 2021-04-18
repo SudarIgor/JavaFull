@@ -9,7 +9,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import lesson2.AuthServiceImpl;
 
 import java.io.IOException;
 import java.net.URL;
@@ -51,13 +50,13 @@ public class ChatController implements Initializable {
         userName = LogInChatController.getUserName();
         clentName.clear();
         clentName.appendText(userName);
-        reader = new CharReader(reedChatTextAr, NetworkService.getInstance().getInputStream());
         try {
             NetworkService.getInstance()
                     .write(Message.of(userName, "/$start"));
         } catch (IOException e) {
             e.printStackTrace();
         }
+        reader = new CharReader(reedChatTextAr, NetworkService.getInstance().getObjectInputStream());
         reader.start();
     }
 

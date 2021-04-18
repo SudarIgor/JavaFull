@@ -4,42 +4,40 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import lesson2.AuthServiceHandler;
-import lesson2.AuthServiceImpl;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.sql.SQLException;
 
-public class RegistrationController {
+public class RegistrationController implements Closeable {
     public TextField loginRegTF;
     public PasswordField passworRegdPF;
     public PasswordField passwordRepeatPF;
     public Button registration;
 
-    private AuthServiceImpl authService;
+
+    public void registration(ActionEvent actionEvent)  throws SQLException, ClassNotFoundException, IOException {
 
 
-    public void registration(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
-
-        authService = AuthServiceImpl.getSample();
-
-
-        if (authService.getUserDao().userExists(loginRegTF.getText())){
-            loginRegTF.setText("Wrong: username is already taken");
-            passworRegdPF.clear();
-            passwordRepeatPF.clear();
-
+        if (passworRegdPF.getText().equals(passwordRepeatPF.getText())) {
+            NetworkService.getInstance().write(Message.of("User",
+                    String.join(" ", "/$registration", loginRegTF.getText(), passworRegdPF.getText())));
+            Message message = (Message) NetworkService.getInstance().getObjectInputStream().readObject();
+            if (message.getMessage().equals("/$registrationSuccessful")) {
+                loginRegTF.setText("Registration successful");
+                passworRegdPF.clear();
+                passwordRepeatPF.clear();
+//                loginRegTF.getScene().getWindow().hide();
+            } else {
+                loginRegTF.setText("Wrong: username is already taken");
+                passworRegdPF.clear();
+                passwordRepeatPF.clear();
+            }
         }
-        else if (passworRegdPF.getText().equals(passwordRepeatPF.getText())) {
-            authService.addUser(loginRegTF.getText(), passworRegdPF.getText());
+    }
 
-            loginRegTF.getScene().getWindow().hide();
-
-        }
-        else {
-            loginRegTF.setText("Wrong: different password");
-            passworRegdPF.clear();
-            passwordRepeatPF.clear();
-        }
-
+    @Override
+    public void close() throws IOException {
+        passworRegdPF.getScene().getWindow().hide();
     }
 }

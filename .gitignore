@@ -1,2 +1,16 @@
 # Project exclude paths
 /target/
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+JavaFull-dev.zip
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+.idea

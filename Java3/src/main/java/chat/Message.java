@@ -49,6 +49,6 @@ public class Message implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("%s %s: %s\n", format.format(sendAt), author, message);
+        return String.format("%s %s: \n%s\n", format.format(sendAt), author, message);
     }
 }

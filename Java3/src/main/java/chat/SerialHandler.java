@@ -1,10 +1,13 @@
 package chat;
 
+import lesson2.AuthServiceHandler;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.sql.SQLException;
 
 public class SerialHandler implements Closeable, Runnable {
 
@@ -15,6 +18,7 @@ public class SerialHandler implements Closeable, Runnable {
     private boolean running;
     private final byte [] buffer;
     private final Server server;
+    private AuthServiceHandler authServiceHandler;
 
 
     public SerialHandler(Socket socket, Server server) throws IOException {
@@ -25,7 +29,7 @@ public class SerialHandler implements Closeable, Runnable {
         running = true;
         buffer = new byte[256];
         this.server = server;
-        os.writeObject(Message.of(userName, "OK"));
+        os.writeObject(Message.of("Server", "Connection to the server is successful"));
         os.flush();
     }
 
@@ -42,10 +46,16 @@ public class SerialHandler implements Closeable, Runnable {
         while (running) {
             try {
                 Message message = (Message) is.readObject();
+                if(message.getMessage().startsWith("/$start")){
+                    userName = message.getAuthor();
+                    continue;
+                }
                 if (message.getMessage().startsWith("/changeNick")) {
+                    authServiceHandler = new AuthServiceHandler();
                     String[] data = message.getMessage().split(" ");
                     String oldName = userName;
                     userName = data[1];
+
                     String msg = String.format("User %s change name to: %s", oldName, userName);
                     message.setAuthor(userName);
                     message.setMessage(msg);
@@ -64,7 +74,7 @@ public class SerialHandler implements Closeable, Runnable {
                 message.setAuthor(userName);
                 System.out.println(message);
                 server.broadCast(message);
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException | SQLException e) {
                 System.err.println("Exception while read");
                 break;
             }
@@ -78,6 +88,10 @@ public class SerialHandler implements Closeable, Runnable {
 
     public String getUserName() {
         return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     @Override

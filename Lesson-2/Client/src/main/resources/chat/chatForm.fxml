@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+      prefWidth="600.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chat.ChatController">
+
+
+    <HBox prefHeight="400.0" prefWidth="600.0">
+        <Pane prefHeight="400.0" prefWidth="75.0" style="-fx-background-color: #666666;">
+            <children>
+                <Button fx:id="quitBT" layoutX="9.0" layoutY="14.0" mnemonicParsing="false" onAction="#quit" prefHeight="25.0" prefWidth="57.0" style="-fx-background-color: #777777;" text="Quit" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP">
+                    <font>
+                        <Font name="System Bold Italic" size="15.0" />
+                    </font>
+                </Button>
+            </children></Pane>
+
+        <Pane prefHeight="400.0" prefWidth="175.0" style="-fx-background-color: #777777;">
+
+            <HBox prefHeight="400.0" prefWidth="175.0">
+
+                <Pane prefHeight="400.0" prefWidth="175.0">
+               <children>
+                  <Label layoutX="6.0" layoutY="3.0" prefHeight="25.0" prefWidth="140.0" text="Commands for chat:" textFill="#afafaf" />
+                  <Label layoutX="6.0" layoutY="26.0" prefHeight="17.0" prefWidth="157.0" text=" /private" textFill="#afafaf" />
+                  <Label layoutX="7.0" layoutY="43.0" prefHeight="17.0" prefWidth="157.0" text=" /changeNick" textFill="#afafaf" />
+               </children></Pane>
+            </HBox>
+        </Pane>
+
+        <VBox prefHeight="400.0" prefWidth="350.0">
+            <Pane prefHeight="30.0" prefWidth="350.0" style="-fx-background-color: #666666;">
+                <children>
+                    <TextField fx:id="clentName" disable="true" editable="false" layoutY="3.0" onAction="#changeName" prefHeight="25.0" prefWidth="150.0" text="Name" translateX="5.0">
+                        <font>
+                            <Font name="System Bold Italic" size="12.0" />
+                        </font></TextField>
+                </children></Pane>
+
+            <Pane prefHeight="340.0" prefWidth="350.0" style="-fx-background-color: #666666;">
+
+                <TextArea fx:id="reedChatTextAr" editable="false" layoutY="2.0" prefHeight="348.0" prefWidth="340.0" translateX="5.0" translateY="5.0" translateZ="5.0" wrapText="true" />
+            </Pane>
+
+            <HBox prefHeight="40.0" prefWidth="350.0" style="-fx-background-color: #666666;">
+
+                <TextField fx:id="writeChatTextAr" onAction="#send" prefHeight="30.0" prefWidth="280.0" translateX="5.0" translateY="2.0" />
+
+                <Button fx:id="sendBt" mnemonicParsing="false" onAction="#send" prefHeight="30.0" prefWidth="57.0" style="-fx-background-color: #777777;" text="Send" textAlignment="CENTER" textFill="WHITE" translateX="8.0" translateY="1.0">
+                    <font>
+                        <Font name="System Bold Italic" size="15.0" />
+                    </font></Button>
+
+            </HBox>
+
+        </VBox>
+
+    </HBox>
+
+</Pane>

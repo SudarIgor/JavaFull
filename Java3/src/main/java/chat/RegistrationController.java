@@ -4,16 +4,18 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import org.springframework.stereotype.Component;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.sql.SQLException;
-
+@Component
 public class RegistrationController implements Closeable {
     public TextField loginRegTF;
     public PasswordField passworRegdPF;
     public PasswordField passwordRepeatPF;
     public Button registration;
+
 
 
     public void registration(ActionEvent actionEvent)  throws SQLException, ClassNotFoundException, IOException {

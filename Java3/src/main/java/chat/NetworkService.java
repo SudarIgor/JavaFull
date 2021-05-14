@@ -1,14 +1,21 @@
 package chat;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import java.io.*;
 import java.net.Socket;
 
+@Component
+@Scope ("prototype")
 public class NetworkService {
     private static NetworkService instance;
     private final ObjectInputStream is;
     private final ObjectOutputStream os;
 
-    private NetworkService() {
+    @Autowired
+    public NetworkService() {
         try {
             Socket socket = new Socket("localhost", 8189);
             os = new ObjectOutputStream(socket.getOutputStream());

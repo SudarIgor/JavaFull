@@ -9,12 +9,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-
+@Component
 public class ChatController implements Initializable {
 
     public TextArea reedChatTextAr;
@@ -56,7 +57,7 @@ public class ChatController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        reader = new CharReader(reedChatTextAr, NetworkService.getInstance().getObjectInputStream());
+        reader = new CharReader(clentName, reedChatTextAr, NetworkService.getInstance().getObjectInputStream());
         reader.start();
     }
 

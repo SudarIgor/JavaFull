@@ -1,9 +1,12 @@
 package chat;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.sql.*;
-
+@Component
 public class AuthServiceHandler implements Closeable {
 
     private Connection connection;
@@ -21,7 +24,7 @@ public class AuthServiceHandler implements Closeable {
                 ");";
 
 
-
+    @Autowired
     public AuthServiceHandler() throws ClassNotFoundException, SQLException {
         Class.forName("org.sqlite.JDBC");
         connection = DriverManager.getConnection("jdbc:sqlite:UserAuthDB");

@@ -8,11 +8,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import lesson2.AuthServiceImpl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
-
+@Component
 public class LogInChatController {
     public TextField loginTF;
     public PasswordField passwordPF;
@@ -20,14 +25,11 @@ public class LogInChatController {
     public Button registrationBt;
 
     private static String userName;
-    private AuthServiceImpl authService;
-
 
 
     public void enter(ActionEvent actionEvent) throws IOException, SQLException, ClassNotFoundException {
-        userName = loginTF.getText();
-
-        NetworkService.getInstance().write(Message.of(userName,
+       userName = loginTF.getText();
+       NetworkService.getInstance().write(Message.of(userName,
                 String.join(" ", "/$login", loginTF.getText(), passwordPF.getText())));
 
         Message message =(Message) NetworkService.getInstance().getObjectInputStream().readObject();
@@ -35,7 +37,7 @@ public class LogInChatController {
 
 
         if (message.getMessage().equals("/$trueLogin")){
-           Parent chat = FXMLLoader.load(getClass().getResource("chatForm.fxml"));
+            Parent chat = FXMLLoader.load(getClass().getResource("chatForm.fxml"));
             Stage stage = new Stage();
             stage.setTitle("Chat");
             stage.setScene( new Scene(chat));

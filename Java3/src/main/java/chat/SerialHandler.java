@@ -1,5 +1,7 @@
 package chat;
 
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import java.io.*;
 import java.net.Socket;
 import java.sql.SQLException;
@@ -14,9 +16,11 @@ public class SerialHandler implements Closeable, Runnable {
     private final byte [] buffer;
     private final Server server;
     private AuthServiceHandler authServiceHandler;
+    private AuthServiceImpl authServiceImpl;
 
 
     public SerialHandler(Socket socket, Server server) throws IOException {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
         os = new ObjectOutputStream(socket.getOutputStream());
         is = new ObjectInputStream(socket.getInputStream());
         cnt++;
@@ -24,6 +28,8 @@ public class SerialHandler implements Closeable, Runnable {
         running = true;
         buffer = new byte[256];
         this.server = server;
+        authServiceImpl = context.getBean("authServiceImpl",AuthServiceImpl.class);
+        authServiceHandler = context.getBean("authServiceHandler", AuthServiceHandler.class);
 //        os.writeObject(Message.of("Server", "Connection to the server is successful"));
 //        os.flush();
     }
@@ -45,7 +51,7 @@ public class SerialHandler implements Closeable, Runnable {
                     System.out.println("in login");
                     boolean flag;
                     userName = message.getAuthor();
-                    flag = AuthServiceImpl.getSample().auth(
+                    flag = authServiceImpl.auth(
                             message.getMessage().split(" ")[1], message.getMessage().split(" ")[2]);
                     System.out.println(flag);
                     if(flag) {
@@ -59,9 +65,9 @@ public class SerialHandler implements Closeable, Runnable {
                     continue;
                 }
                 if(message.getMessage().startsWith("/$registration")){
-                     authServiceHandler = new AuthServiceHandler();
+//                     authServiceHandler = new AuthServiceHandler();
                      if(!authServiceHandler.userExists(message.getMessage().split(" ")[1])){
-                         AuthServiceImpl.getSample().addUser(message.getMessage().split(" ")[1],
+                         authServiceImpl.addUser(message.getMessage().split(" ")[1],
                                  message.getMessage().split(" ")[2]);
                          os.writeObject(Message.of("Name", "/$registrationSuccessful"));
                      }   else  os.writeObject(Message.of("Name", "/$loginIsBusy"));
@@ -77,7 +83,7 @@ public class SerialHandler implements Closeable, Runnable {
                     continue;
                 }
                 if (message.getMessage().startsWith("/changeNick")) {
-                    authServiceHandler = new AuthServiceHandler();
+//                    authServiceHandler = new AuthServiceHandler();
                     String[] data = message.getMessage().split(" ");
                     String oldName = userName;
                     userName = data[1];

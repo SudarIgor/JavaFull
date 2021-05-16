@@ -9,12 +9,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import server.Message;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-
+@Component
 public class ChatController implements Initializable {
 
     public TextArea reedChatTextAr;
@@ -24,9 +27,10 @@ public class ChatController implements Initializable {
     private String userName;
     private CharReader reader;
 
+    private NetworkService networkService;
+
     public void send(ActionEvent actionEvent) throws IOException {
-        NetworkService.getInstance()
-                .write(Message.of(userName, writeChatTextAr.getText()));
+        networkService.write(Message.of(userName, writeChatTextAr.getText()));
         writeChatTextAr.clear();
 
         System.out.println(writeChatTextAr.getText());
@@ -51,18 +55,23 @@ public class ChatController implements Initializable {
         clentName.clear();
         clentName.appendText(userName);
         try {
-            NetworkService.getInstance()
-                    .write(Message.of(userName, "/$start"));
+           networkService.write(Message.of(userName, "/$start"));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        reader = new CharReader(reedChatTextAr, NetworkService.getInstance().getObjectInputStream());
+        reader = new CharReader(reedChatTextAr,networkService.getObjectInputStream());
         reader.start();
     }
 
 
     public void changeName(ActionEvent actionEvent) {
 
+    }
+
+    @Autowired
+
+    public void setNetworkService(NetworkService networkService) {
+        this.networkService = networkService;
     }
 }
 

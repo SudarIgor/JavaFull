@@ -8,11 +8,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import lesson2.AuthServiceImpl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import server.Message;
 
 import java.io.IOException;
 import java.sql.SQLException;
-
+@Component
 public class LogInChatController {
     public TextField loginTF;
     public PasswordField passwordPF;
@@ -20,22 +23,25 @@ public class LogInChatController {
     public Button registrationBt;
 
     private static String userName;
-    private AuthServiceImpl authService;
 
+    private NetworkService networkService;
+    private FXMLLoaderProvider fxmlLoaderProvider;
 
 
     public void enter(ActionEvent actionEvent) throws IOException, SQLException, ClassNotFoundException {
         userName = loginTF.getText();
 
-        NetworkService.getInstance().write(Message.of(userName,
+        networkService.write(Message.of(userName,
                 String.join(" ", "/$login", loginTF.getText(), passwordPF.getText())));
 
-        Message message =(Message) NetworkService.getInstance().getObjectInputStream().readObject();
+        Message message =(Message) networkService.getObjectInputStream().readObject();
         System.out.println(message.toString());
 
 
         if (message.getMessage().equals("/$trueLogin")){
-           Parent chat = FXMLLoader.load(getClass().getResource("chatForm.fxml"));
+            FXMLLoader loader = fxmlLoaderProvider.getLoader("chatForm.fxml");
+            Parent chat = loader.load();
+//             Parent chat = FXMLLoader.load(getClass().getResource("chatForm.fxml"));
             Stage stage = new Stage();
             stage.setTitle("Chat");
             stage.setScene( new Scene(chat));
@@ -50,7 +56,8 @@ public class LogInChatController {
     }
 
     public void registration(ActionEvent actionEvent) throws IOException {
-        Parent reg = FXMLLoader.load(getClass().getResource("registration.fxml"));
+        FXMLLoader loader = fxmlLoaderProvider.getLoader("registration.fxml");
+        Parent reg = loader.load();
         Stage stage = new Stage();
         stage.setTitle("Registration");
         stage.setScene( new Scene(reg));
@@ -61,5 +68,16 @@ public class LogInChatController {
     public static String getUserName() {
 
         return userName;
+    }
+
+    @Autowired
+    public void setNetworkService(NetworkService networkService) {
+        this.networkService = networkService;
+    }
+
+    @Autowired
+
+    public void setFxmlLoaderProvider(FXMLLoaderProvider fxmlLoaderProvider) {
+        this.fxmlLoaderProvider = fxmlLoaderProvider;
     }
 }

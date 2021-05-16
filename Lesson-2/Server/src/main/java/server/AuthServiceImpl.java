@@ -1,22 +1,19 @@
 package server;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.sql.SQLException;
 
+@Component
 public class AuthServiceImpl implements AuthService {
 
-    private static AuthServiceImpl sample;
     private AuthServiceHandler userDao;
 
     public AuthServiceImpl() throws SQLException, ClassNotFoundException {
        userDao = new AuthServiceHandler();
     }
 
-    public static AuthServiceImpl getSample() throws SQLException, ClassNotFoundException {
-        if (sample == null){
-            sample = new AuthServiceImpl();
-        }
-        return sample;
-    }
 
     public AuthServiceHandler getUserDao() {
         return userDao;
@@ -44,5 +41,9 @@ public class AuthServiceImpl implements AuthService {
 
         return false;
 
+    }
+    @Autowired
+    public void setUserDao(AuthServiceHandler userDao) {
+        this.userDao = userDao;
     }
 }

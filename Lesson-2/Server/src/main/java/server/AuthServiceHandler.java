@@ -1,13 +1,19 @@
 package server;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Component;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.sql.*;
-
+@Component
 public class AuthServiceHandler implements Closeable {
 
     private Connection connection;
     private Statement statement;
+
+    private User user;
 
 
     private static final String AUTH_TABLE =
@@ -21,7 +27,7 @@ public class AuthServiceHandler implements Closeable {
                 ");";
 
 
-
+    @Autowired
     public AuthServiceHandler() throws ClassNotFoundException, SQLException {
         Class.forName("org.sqlite.JDBC");
         connection = DriverManager.getConnection("jdbc:sqlite:UserAuthDB");
@@ -47,7 +53,7 @@ public class AuthServiceHandler implements Closeable {
 
     public User getUserByLogin(String login) throws SQLException {
         String sql = String.format("SELECT * FROM USERS WHERE LOGIN = '%s'", login);
-        User user = new User(null,null);
+//        User user = new User(null,null);
 
         ResultSet rs = statement.executeQuery(sql);
         while (rs.next()){
@@ -61,7 +67,7 @@ public class AuthServiceHandler implements Closeable {
 
     public User getUserByID (Integer id) throws SQLException {
         String sql = String.format("SELECT * FROM USERS WHERE ID = %d", id);
-        User user = new User(null,null);
+//        User user = new User(null,null);
         ResultSet rs = statement.executeQuery(sql);
         while (rs.next()){
             user.setId(rs.getInt("ID"));
@@ -145,5 +151,9 @@ public class AuthServiceHandler implements Closeable {
             throwables.printStackTrace();
         }
 
+    }
+    @Autowired
+    public void setUser(User user) {
+        this.user = user;
     }
 }

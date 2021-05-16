@@ -1,10 +1,17 @@
 package server;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class User {
     private Integer id;
     private String login;
     private String name;
     private String password;
+
+    public User(){
+
+    }
 
     public User(String login, String password) {
         this.login = login;

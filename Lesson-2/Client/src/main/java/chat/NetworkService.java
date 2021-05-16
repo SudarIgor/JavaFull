@@ -1,16 +1,18 @@
 package chat;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import server.Message;
 
 import java.io.*;
 import java.net.Socket;
-
+@Component
 public class NetworkService {
     private static NetworkService instance;
     private final ObjectInputStream is;
     private final ObjectOutputStream os;
 
-    private NetworkService() {
+    public NetworkService() {
         try {
             Socket socket = new Socket("localhost", 8189);
             os = new ObjectOutputStream(socket.getOutputStream());
@@ -21,12 +23,12 @@ public class NetworkService {
     }
 
 
-    public static NetworkService getInstance(){
-        if (instance == null){
-            instance = new NetworkService();
-        }
-        return instance;
-    }
+//    public static NetworkService getInstance(){
+//        if (instance == null){
+//            instance = new NetworkService();
+//        }
+//        return instance;
+//    }
 
 
     public void write(Message message) throws IOException {
